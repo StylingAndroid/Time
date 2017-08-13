@@ -1,9 +1,9 @@
 package com.stylingandroid.time
 
 import android.view.ViewPropertyAnimator
-import java.util.concurrent.TimeUnit
+import org.threeten.bp.temporal.ChronoUnit
 
-fun ViewPropertyAnimator.setDuration(durationInUnits: Long, unit: TimeUnit): ViewPropertyAnimator =
+fun ViewPropertyAnimator.setDuration(durationInUnits: Long, unit: ChronoUnit): ViewPropertyAnimator =
         apply {
-            duration = unit.toMillis(durationInUnits)
+            duration = unit.duration.toMillis() * durationInUnits
         }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.threeten.bp.*
-import java.util.concurrent.TimeUnit
+import org.threeten.bp.temporal.ChronoUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         text.alpha = 0f
         text.animate()
                 .alpha(1f)
-                .setDuration(1, TimeUnit.SECONDS)
+                .setDuration(1, ChronoUnit.SECONDS)
                 .start()
 
         LocalTime.now().also { now ->
@@ -50,5 +50,15 @@ class MainActivity : AppCompatActivity() {
                 println("Duration between $laterTime and $now: ${Duration.between(laterTime, now)}")
             }
         }
+
+        listOf(2016, 2107, 2000, 1900, 2100, 2400).forEach { year ->
+            println("$year is a leap year: ${Year.of(year).isLeap}")
+        }
+
+        ChronoUnit.values()
+                .filter { it.duration < ChronoUnit.MILLENNIA.duration }
+                .forEach { unit ->
+                    println("$unit is ${unit.duration.toNanos()} ns")
+                }
     }
 }
