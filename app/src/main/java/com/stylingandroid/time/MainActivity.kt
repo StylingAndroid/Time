@@ -60,5 +60,27 @@ class MainActivity : AppCompatActivity() {
                 .forEach { unit ->
                     println("$unit is ${unit.duration.toNanos()} ns")
                 }
+
+        Instant.now().also { now ->
+            LocalDateTime.ofInstant(now, ZoneId.systemDefault()).also { here ->
+                LocalDateTime.ofInstant(now, ZoneId.of("Europe/Paris")).also { paris ->
+                    println("Here: $here")
+                    println("Paris: $paris")
+                    println("Duration: ${Duration.between(here, paris)}")
+                }
+            }
+        }
+
+        Instant.now().also { now ->
+            ZonedDateTime.ofInstant(now, ZoneId.systemDefault()).also { here ->
+                ZonedDateTime.ofInstant(now, ZoneId.of("Europe/Paris")).also { paris ->
+                    println("Here: $here")
+                    println("Paris: $paris")
+                    println("Duration: ${Duration.between(here, paris)}")
+                }
+            }
+        }
+
+        println("Available timezones: ${ZoneId.getAvailableZoneIds().size}")
     }
 }
