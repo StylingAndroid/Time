@@ -1,22 +1,34 @@
 package com.stylingandroid.time
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import org.threeten.bp.*
-import org.threeten.bp.temporal.ChronoUnit
+import androidx.appcompat.app.AppCompatActivity
+import com.stylingandroid.time.databinding.ActivityMainBinding
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.Period
+import java.time.Year
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
+    @Suppress("LongMethod", "ComplexMethod", "MagicNumber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        text.alpha = 0f
-        text.animate()
-                .alpha(1f)
-                .setDuration(1, ChronoUnit.SECONDS)
-                .start()
+        binding.text.alpha = 0f
+        binding.text.animate()
+            .alpha(1f)
+            .setDuration(1, ChronoUnit.SECONDS)
+            .start()
 
         LocalTime.now().also { now ->
             println("Now: $now")
@@ -33,7 +45,6 @@ class MainActivity : AppCompatActivity() {
                 println("Tomorrow: $tomorrow")
                 println("Period between $today and $tomorrow: ${Period.between(today, tomorrow)}")
                 println("Period between $tomorrow and $today: ${Period.between(tomorrow, today)}")
-
             }
         }
 
@@ -56,10 +67,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         ChronoUnit.values()
-                .filter { it.duration < ChronoUnit.MILLENNIA.duration }
-                .forEach { unit ->
-                    println("$unit is ${unit.duration.toNanos()} ns")
-                }
+            .filter { it.duration < ChronoUnit.MILLENNIA.duration }
+            .forEach { unit ->
+                println("$unit is ${unit.duration.toNanos()} ns")
+            }
 
         Instant.now().also { now ->
             LocalDateTime.ofInstant(now, ZoneId.systemDefault()).also { here ->

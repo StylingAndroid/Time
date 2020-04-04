@@ -4,11 +4,16 @@ node {
   }
 
   stage('Build') {
-        sh "./gradlew clean assemble test check"
+        sh "./gradlew clean assemble"
+  }
+
+  stage('Check') {
+        sh "./gradlew detekt check ktlintCheck"
   }
 
   stage('Report') {
-        androidLint canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/lint-results.xml', unHealthy: '', unstableTotalAll: '0'
-        step([$class: 'CheckStylePublisher', canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/reports/**/detekt.xml', unHealthy: '', unstableTotalAll: '0'])
+        recordIssues tool: androidLintParser(pattern: '**/reports/**/lint-results.xml', reportEncoding: 'UTF-8')
+        recordIssues tool: detekt(pattern: '**/reports/**/detekt.xml', reportEncoding: 'UTF-8')
+        recordIssues tool: ktLint(pattern: '**/reports/**/ktlint*.xml', reportEncoding: 'UTF-8')
   }
 }
